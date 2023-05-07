@@ -9,6 +9,14 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 st.set_page_config(page_title="Run To Inspire", page_icon=":snow_capped_mountain:")
 
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+
 header = st.container()
 dataset = st.container()
 features = st.container()
@@ -19,46 +27,57 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 
 with header:
     # Define title text
-    title_text = "Welcome to my cool Data Science project about running!"
+    title_text = "Welcome to my Data Science project about running! 🏃 "
     # Display centered title
     st.markdown(f"<h1 style='text-align: center'>{title_text}</h1>", unsafe_allow_html=True)
     
     st.markdown(
                 '''
-                This is a very simple "just to try all parts together" progect with a little bit 
+                This is the "just to try all parts together" project with a little bit 
                 of EDA and basic model training.  
                 My project provides valuable insights for runners looking to improve their training strategies, 
-                and demonstrates the potential of data science in sports analysis. (not yet) :smile:
+                and demonstrates the potential of data science in sports analysis. (not yet fully, but 
+                there are ways to improve)
                 '''
                 )
 
 with dataset:
-    st.header('Here is some information about my dataset')
+    st.header('Information about my dataset.')
     st.markdown(
                 '''
                 I decided to use my own running results over the past few years 
                 to create a dataset for EDA and model training.  
-                I chose only some of the many features that you can analyze to get some better
-                insights into you performance.
+                I chose only some of the many features that you can analyze to 
+                get some better insights into your training process to improve your running performance.
                 '''
                 )
     
     st.write("<br>", unsafe_allow_html=True)
     st.subheader('Dataframe head:')
+    st.markdown(
+                '''
+                This dataset I downloaded from my Strava account and cleaned from all of the raw data.
+                '''
+                )
     df = pd.read_csv('data/running_data.csv')
     st.write(df.head())
     st.write("<br>", unsafe_allow_html=True)
 
     
-    st.subheader('Let\'s see some summury statistics:')
+    st.subheader('Summury statistics:')
+    st.markdown(
+                '''
+                Here you can see some summary statistics of the dataframe.
+                '''
+                )
     st.write(df.describe())
     st.write("<br>", unsafe_allow_html=True)
 
    
-    st.subheader('Some visualizations:')
+    st.subheader('Visualizations:')
     st.markdown(
             '''
-            Here you can see distribution of Average Heart Rate over the years with
+            Here you can see the distribution of Average Heart Rate over the years with
             mean and median displayed as lines for clearer visualization.
             '''
             )
@@ -118,7 +137,7 @@ with dataset:
     st.write("<br>", unsafe_allow_html=True)
 
 with features:
-    st.subheader('This is some information about features of my dataset')
+    st.subheader('Information about features of my dataset:')
     st.markdown(
             '''
             List of features in my dataset to use for model training:
@@ -129,10 +148,10 @@ with features:
     st.write("<br>", unsafe_allow_html=True)
 
 with model:
-    st.header('Model training')
+    st.header('Model training.')
     st.markdown(
             '''
-            In this part we will train Random Forest Regressor.
+            In this part we will train Random Forest Regressor.  
             In the menu below you can choose some options to tune model training parameters
             and see how model performance reacts on them.
             '''
@@ -171,21 +190,22 @@ with model:
     st.write("<br>", unsafe_allow_html=True)
 
 with predict:  
-    st.header('Predicting pace for your training')
+    st.header('Predicting pace for your training.')
     st.markdown(
             '''
             Here you can predict Pace for your run depending on what feature you've
             traind the model.  
-            For example: today you wish to run with low effort and don't go over your
-            second heart rate zone, let's say 150 bpm.  
-            As input feature for your model you choose - Average Heart Rate,
-            and now you can enter your disied heart rate for the run.
+            >For example: today you wish to run with low effort and don't go over your
+            second heart rate zone, let's say 160 bpm.  
+            >As input feature for your model (which you enter in model training part
+            above) you choose - Average Heart Rate, and now you can enter your disied 
+            heart rate for the run.
             '''
             )  
 
     col1, col2 = st.columns(2)
 
-    input_hr = col1.text_input('Enter preferable Heart Rate for your run', 160) 
+    input_hr = col1.text_input('Enter preferable value of the training feature for your run', 160) 
     
     X_new = np.array([[input_hr]])
     
